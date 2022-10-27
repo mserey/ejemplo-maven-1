@@ -25,15 +25,15 @@ pipeline {
                 sh "echo 'Persisitir Archivo!'"
                 }
             }
-           // post {
+            post {
                 //record the test results and archive the jar file.
-            //    success {
-            //        archiveArtifacts(artifacts:'**/*.txt', followSymlinks:false)
-            //    }
-           // }
+                success {
+                    archiveArtifacts(artifacts:'**/*.txt', followSymlinks:false)
+                }
+            }
         }
     }
-    /*post {
+    post {
         always {
             sh "echo 'fase always executed post'"
         }
@@ -43,5 +43,5 @@ pipeline {
         failure {
             sh "echo 'fase failure'"
         }
-    }*/
+    }
 }
