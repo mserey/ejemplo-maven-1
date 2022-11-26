@@ -5,7 +5,19 @@ def jsonParse(def json) {
 }
 pipeline {
     agent any
+    environment {
+        //NEXUS_USER         = credentials('nexus-user')
+        NEXUS_PASSWORD     = credentials('nexus-password')
+    }
     stages {
+        // stage("Paso 0: Download Code and checkout"){
+        //     checkout(
+        //         [$class: 'GitSCM',
+        //         //Acá reemplazar por el nonbre de branch
+        //         branches: [[name: "*/feature/sonar*" ]],
+        //         //Acá reemplazar por su propio repositorio
+        //         userRemoteConfigs: [[url: 'https://github.com/mserey/ejemplo-maven-1.git']]])
+        // }
         stage("Paso 1: Compliar"){
             steps {
                 script {
@@ -126,12 +138,11 @@ pipeline {
         always {
             sh "echo 'fase always executed post'"
         }
-        success {
-            sh "echo 'fase success'"
+        success{
+            slackSend color: 'good', message: "[Mentor Devops] [${JOB_NAME}] [${BUILD_TAG}] Ejecucion Exitosa", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
         }
-
-        failure {
-            sh "echo 'fase failure'"
+        failure{
+            slackSend color: 'danger', message: "[Mentor Devops] [${env.JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
         }
     }
 }
