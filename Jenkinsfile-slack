@@ -11,7 +11,7 @@ pipeline {
                 script{
                     env.STAGE='STAGE TEST'
                     sh 'echo "Testins stage && Slack"'
-                    //sh 'ssh root:122.21.12.12' para generar fallo
+                    sh 'ssh root:122.21.12.12' para generar fallo
                 }
             }
 			post{
