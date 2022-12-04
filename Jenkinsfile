@@ -5,6 +5,10 @@ def jsonParse(def json) {
 }
 pipeline {
     agent any
+    environment {
+        //NEXUS_USER         = credentials('nexus-user')
+        channel = "D0457HMKM36" //marco serey
+    }
     stages {
         stage("Paso 1: Compliar"){
             steps {
@@ -85,10 +89,10 @@ pipeline {
             sh "echo 'fase always executed post'"
         }
 		success{
-            slackSend color: 'good', message: "[OriVerhu] [${JOB_NAME}] [${BUILD_TAG}] Ejecucion Exitosa", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
+            slackSend color: 'good', channel: "${env.channel}", message: "[mserey] [${JOB_NAME}] [${BUILD_TAG}] Ejecucion Exitosa", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
         }
         failure{
-            slackSend color: 'danger', message: "[OriVerhu] [${env.JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
+            slackSend color: 'danger', channel: "${env.channel}", message: "[mserey] [${env.JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
         }
     }
 }
